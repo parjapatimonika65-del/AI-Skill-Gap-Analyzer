@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Skill Gap Analyzer - Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🤖 AI Skill Gap Analyzer
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <!-- Welcome Section -->
+
+    <section class="result-header">
+
+        <p class="dashboard-label">
+            SKILL ANALYSIS DASHBOARD
+        </p>
+
+        <h1>
+            Hello {{ name }} 👋
+        </h1>
+
+        <p>
+            Target Role:
+            <strong>{{ target_role }}</strong>
+        </p>
+
+    </section>
+
+
+    <!-- Resume Skills -->
+
+    {% if resume_skills %}
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <span>📄</span>
+
+            <div>
+                <h2>Skills Detected From Resume</h2>
+
+                <p>
+                    Automatically extracted from your uploaded resume.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="skills">
+
+            {% for skill in resume_skills %}
+
+                <span class="skill matched">
+                    {{ skill }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- Dashboard Cards -->
+
+    <section class="dashboard">
+
+        <div class="score-card">
+
+            <div class="score-icon">
+                📊
+            </div>
+
+            <h2>
+                {{ result.percentage }}%
+            </h2>
+
+            <p>
+                Skill Match
+            </p>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <div class="score-icon">
+                🎯
+            </div>
+
+            <h2>
+                {{ result.level }}
+            </h2>
+
+            <p>
+                Current Level
+            </p>
+
+        </div>
+
+
+        <div class="score-card">
+
+            <div class="score-icon">
+                📚
+            </div>
+
+            <h2>
+                {{ result.missing|length }}
+            </h2>
+
+            <p>
+                Skills Missing
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Progress Bar -->
+
+    <section class="card">
+
+        <div class="progress-header">
+
+            <div>
+                <h2>Overall Skill Progress</h2>
+
+                <p>
+                    Your current skills compared with the requirements
+                    of your target role.
+                </p>
+            </div>
+
+            <strong>
+                {{ result.percentage }}%
+            </strong>
+
+        </div>
+
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                style="width: {{ result.percentage }}%;"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Matched Skills -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <span>✅</span>
+
+            <div>
+                <h2>Matched Skills</h2>
+
+                <p>
+                    Skills you already have for this role.
+                </p>
+            </div>
+
+        </div>
+
+
+        {% if result.matched %}
+
+        <div class="skills">
+
+            {% for skill in result.matched %}
+
+                <span class="skill matched">
+                    {{ skill }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <p>
+            No required skills matched yet.
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- Skill Gap -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <span>❌</span>
+
+            <div>
+                <h2>Skill Gap</h2>
+
+                <p>
+                    Skills you need to develop for your target role.
+                </p>
+            </div>
+
+        </div>
+
+
+        {% if result.missing %}
+
+        <div class="skills">
+
+            {% for skill in result.missing %}
+
+                <span class="skill missing">
+                    {{ skill }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <p>
+            🎉 You have all the required skills!
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- Learning Roadmap -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <span>🚀</span>
+
+            <div>
+                <h2>Recommended Learning Roadmap</h2>
+
+                <p>
+                    Follow these steps to close your skill gap.
+                </p>
+            </div>
+
+        </div>
+
+
+        {% if result.roadmap %}
+
+        <ol class="roadmap">
+
+            {% for step in result.roadmap %}
+
+                <li>
+                    {{ step }}
+                </li>
+
+            {% endfor %}
+
+        </ol>
+
+        {% else %}
+
+        <p>
+            🎉 No additional learning required!
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- Required Skills -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <span>📚</span>
+
+            <div>
+                <h2>Required Skills</h2>
+
+                <p>
+                    Skills expected for {{ target_role }}.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="skills">
+
+            {% for skill in result.required %}
+
+                <span class="skill">
+                    {{ skill }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Bottom Button -->
+
+    <a href="/" class="back-button">
+        ← Analyze Another Resume
+    </a>
+
+
+</main>
+
+</body>
+
+</html>
