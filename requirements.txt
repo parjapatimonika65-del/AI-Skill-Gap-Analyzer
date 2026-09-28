@@ -1,3 +1,5 @@
 Flask
-pypdf
+pyPDF2
 gunicorn
+Streamlit
+pandas
